@@ -21,7 +21,7 @@ urlpatterns = [
     path('manageusers/', views.manageusers),
     path('manageuserstatus/', views.manageuserstatus),
     path('verify/', views.verify),
-    
+    path('contact/', views.contact),
     
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

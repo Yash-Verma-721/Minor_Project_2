@@ -1,11 +1,21 @@
 
-    <footer class="ss-landing-footer">
-        <div class="ss-landing-container">
-            <p>&copy; 2026 Secure Share. All rights reserved.</p>
-            <div class="ss-landing-footer-links">
-                <a href="#">Privacy</a>
-                <a href="#">Terms</a>
-                <a href="#">Contact</a>
-            </div>
+    {% load static %}
+
+<link rel="stylesheet" href="{% static 'core/css/footer.css' %}">
+
+<footer class="ft-footer">
+    <div class="ft-container">
+        <p>&copy; 2026 Secure Share. All rights reserved.</p>
+        <div class="ft-footer-links">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Contact</a>
         </div>
-    </footer>
+    </div>
+    
+    <div class="ft-container">
+        <h2>&copy; Secure Share. All rights reserved. Design by <a href="" rel="nofollow">YASH</a></h2>
+    </div>
+</footer>
+</body>
+</html>

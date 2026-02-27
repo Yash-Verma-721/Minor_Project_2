@@ -8,15 +8,7 @@
     <link rel="stylesheet" href="{% static 'core/css/landing.css' %}">
 </head>
 <body>
-    <nav class="ss-landing-navbar">
-        <div class="ss-landing-container">
-            <div class="ss-landing-logo">🔐 Secure Share</div>
-            <div class="ss-landing-nav-buttons">
-                <a href="{% url 'login' %}" class="ss-landing-btn ss-landing-btn-secondary">Login</a>
-                <a href="{% url 'signup' %}" class="ss-landing-btn ss-landing-btn-primary">Sign Up</a>
-            </div>
-        </div>
-    </nav>
+    {% include 'core/nav.html' %}
 
     <section class="ss-landing-hero">
         <div class="ss-landing-container">
@@ -57,15 +49,6 @@
         </div>
     </section>
 
-    <footer class="ss-landing-footer">
-        <div class="ss-landing-container">
-            <p>&copy; 2026 Secure Share. All rights reserved.</p>
-            <div class="ss-landing-footer-links">
-                <a href="#">Privacy</a>
-                <a href="#">Terms</a>
-                <a href="#">Contact</a>
-            </div>
-        </div>
-    </footer>
+    {% include 'core/footer.html' %}
 </body>
 </html>

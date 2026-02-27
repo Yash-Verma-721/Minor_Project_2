@@ -7,18 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - Secure Share</title>
     <link rel="stylesheet" href="{% static 'core/css/signup.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/landing.css' %}">
 </head>
 
 <body>
-    <nav class="ss-signup-navbar">
-        <div class="ss-signup-container">
-            <div class="ss-signup-logo">🔐 Secure Share</div>
-        </div>
-
-    </nav>
+    {% include 'core/nav.html' %}
 
     <div class="ss-signup-wrapper">
-        <div class="ss-signup-container">
+        
             <div class="ss-signup-form-box">
                 <h1 class="ss-signup-title">Create Account</h1>
                 <p class="ss-signup-subtitle">Join Secure Share today</p><br>
@@ -29,7 +25,7 @@
                 </span>
 
 
-                <form method="post" action="{% url 'signup' %}" class="ss-signup-form">
+                <form method="post" action="/Signup/" class="ss-signup-form">
                     {% csrf_token %}
                     <div class="ss-signup-form-group">
                         <label for="username" class="ss-signup-label">Username</label>
@@ -58,19 +54,14 @@
                     </div>
 
 
-                    <input type="submit" value="signup" class="ss-signup-btn"></input>
+                    <input type="submit" value="Signup" class="ss-signup-btn"></input>
                 </form>
 
                 <p class="ss-signup-login-link">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
             </div>
         </div>
-    </div>
+  
 
-    <footer class="ss-signup-footer">
-        <div class="ss-signup-container">
-            <p>&copy; 2026 Secure Share. All rights reserved.</p>
-        </div>
-    </footer>
-</body>
-
-</html>
+    
+    
+{% include 'core/footer.html' %}

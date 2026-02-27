@@ -5,9 +5,12 @@
     <meta charset="UTF-8">
     <title>Login | SecureShare</title>
     <link rel="stylesheet" href="{% static 'core/css/login_style.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/landing.css' %}">
 </head>
 
 <body>
+
+    {% include 'core/nav.html' %}
 
 <div class="secure-login-wrapper">
 
@@ -50,5 +53,5 @@
 
 </div>
 
-</body>
-</html>
+ {% include 'core/footer.html' %}
+

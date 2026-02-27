@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Share - Encrypted File Sharing</title>
+    <link rel="stylesheet" href="{% static 'core/css/landing.css' %}">
+</head>
+<body>
+     {% include 'core/nav.html' %}
+
+  
+   <!-- page starts -->
+	<div id="page">
+		<div id="content">
+			<div class="box">
+				<h2 style="text-align: center;">Welcome to Secure Share , Contact Page</h2>
+<div style="background-color: #E4EFE7; padding: 40px; max-width: 800px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); font-family: Arial, sans-serif;">
+
+    <h2 style="text-align: center; color: #333; margin-bottom: 30px;">📬 Contact Us</h2>
+
+    <p style="text-align: center; font-size: 16px; color: #666;">
+        Have questions, feedback, or just want to say hello? Fill out the form below or reach out to us directly. We’d love to hear from you!
+    </p>
+
+    <form style="margin-top: 30px;">
+        <label for="name" style="display: block; margin-bottom: 10px; color: #333;">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your Name"
+               style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px;">
+
+        <label for="email" style="display: block; margin-bottom: 10px; color: #333;">Email</label>
+        <input type="email" id="email" name="email" placeholder="Your Email"
+               style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px;">
+
+        <label for="message" style="display: block; margin-bottom: 10px; color: #333;">Message</label>
+        <textarea id="message" name="message" placeholder="Your Message" rows="6"
+                  style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+
+        <button type="submit"
+                style="background-color: #4CAF50; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer;">
+            Send Message
+        </button>
+    </form>
+
+    <div style="margin-top: 40px; color: #444;">
+        <h3 style="margin-bottom: 10px;">📧 Email</h3>
+        <p style="margin: 0 0 20px 0;">support@Secureshare.com</p>
+
+        <h3 style="margin-bottom: 10px;">📍 Address</h3>
+        <p style="margin: 0;">123 Student Lane, Knowledge City,<br>India - 000000</p>
+    </div>
+
+    
+</div>
+				
+				
+			</div>
+			<br class="clearfix" />
+		</div>
+
+    {% include 'core/footer.html' %}
+</body>
+</html>
