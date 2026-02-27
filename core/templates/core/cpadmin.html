@@ -1,0 +1,44 @@
+{% load static %}
+
+{% include 'core/adminheader.html' %}
+
+{% include 'core/adminnav.html' %}
+
+<link rel="stylesheet" href="{% static 'core/css/cpadmin.css' %}">
+
+<div class="cpa-page">
+    {% if output %}
+        <div class="cpa-output">{{output}}</div>
+    {% endif %}
+
+    <h2 class="cpa-title">Change Password</h2>
+    
+    <form method="post" action="/cpadmin/" class="cpa-form">
+        {% csrf_token %}
+        
+        <div class="cpa-form-row">
+            <label class="cpa-label">Old Password</label>
+            <input class="cpa-input" id="pwd" type="password" name="opassword"/>
+            <input class="cpa-checkbox" type="checkbox" onclick="pwd.type= this.checked ? 'text' : 'password' ">
+        </div>
+
+        <div class="cpa-form-row">
+            <label class="cpa-label">New Password</label>
+            <input class="cpa-input" id="pwd1" type="password" name="npassword"/>
+            <input class="cpa-checkbox" type="checkbox" onclick="pwd1.type= this.checked ? 'text' : 'password' ">
+        </div>
+
+        <div class="cpa-form-row">
+            <label class="cpa-label">Confirm New Password</label>
+            <input class="cpa-input" id="pwd2" type="password" name="cnpassword"/>
+            <input class="cpa-checkbox" type="checkbox" onclick="pwd2.type= this.checked ? 'text' : 'password' ">
+        </div>
+
+        <div class="cpa-form-row">
+            <input class="cpa-submit" type="submit" value="Change Password"/>
+        </div>
+    </form>
+    
+    <br class="cpa-clearfix" />
+</div>
+

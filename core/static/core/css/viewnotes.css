@@ -1,0 +1,225 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.vn-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.vn-header {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.vn-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.vn-subtitle {
+    font-size: 16px;
+    color: #666;
+}
+
+.vn-files-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.vn-file-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.vn-file-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.vn-file-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+}
+
+.vn-file-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 4px;
+    word-break: break-word;
+}
+
+.vn-file-category {
+    font-size: 12px;
+    color: #667eea;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.vn-file-description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.vn-file-date {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 16px;
+}
+
+.vn-file-actions {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.vn-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.vn-btn-download {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.vn-btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.vn-btn-share {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+    border: 2px solid #667eea;
+}
+
+.vn-btn-share:hover {
+    background: rgba(102, 126, 234, 0.2);
+}
+
+.vn-btn-delete {
+    background: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+    border: 2px solid #f44336;
+}
+
+.vn-btn-delete:hover {
+    background: rgba(244, 67, 54, 0.2);
+}
+
+.vn-btn-copy {
+    padding: 8px 12px;
+    font-size: 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+}
+
+.vn-btn-copy:hover {
+    background: #764ba2;
+}
+
+.vn-share-link-box {
+    background: #f5f7fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.vn-link-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 12px;
+    color: #666;
+    padding: 0;
+    font-family: 'Courier New', monospace;
+}
+
+.vn-link-input:focus {
+    outline: none;
+}
+
+.vn-link-generated {
+    margin-top: 40px;
+    background: white;
+    border: 2px solid #667eea;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+}
+
+.vn-link-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.vn-link-generated .vn-link-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.vn-empty {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.vn-empty p {
+    font-size: 18px;
+    color: #999;
+}
+
+@media (max-width: 768px) {
+    .vn-files-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .vn-title {
+        font-size: 28px;
+    }
+
+    .vn-file-actions {
+        flex-direction: column;
+    }
+
+    .vn-btn {
+        width: 100%;
+    }
+
+    .vn-share-link-box {
+        flex-direction: column;
+    }
+}

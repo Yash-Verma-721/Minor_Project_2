@@ -1,0 +1,60 @@
+{% load static %}
+
+{% include 'core/adminheader.html' %}
+
+{% include 'core/adminnav.html' %}
+
+<link rel="stylesheet" href="{% static 'core/css/manageusers.css' %}">
+
+<br class="mu-page">
+    <h2 class="mu-title">View & Manage User Details</h2>
+    
+    <font style="font-size:20px;color:blue;">{{output}}</font>	
+</br>
+
+
+
+    <span class="mu-info">Total Registered Users : {{userDetails|length}}</span>
+
+    <table class="mu-table" cellspacing="5">
+        <tr>
+            <th>RegID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Info</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        <tr><td colspan="10" class="mu-divider"></td></tr>
+
+        {% for row in userDetails %}
+        <tr>
+            <td>{{row.regid}}</td>
+            <td>{{row.name}}</td>
+            <td>{{row.email}}</td>
+            <td>{{row.mobile}}</td>
+            <td>{{row.info}}</td>
+            <td>
+                {% if row.status %}
+                <span class="mu-status-active">Active</span>
+                {% else %}
+                <span class="mu-status-inactive">InActive</span>
+                {% endif %}
+            </td>
+            <td class="mu-actions">
+                {% if row.status %}
+                <a class="mu-action-change" href="/manageuserstatus/?s=inactive&regid={{row.regid}}">ChangeStatus</a>
+                {% else %}
+                <a class="mu-action-change" href="/manageuserstatus/?s=active&regid={{row.regid}}">ChangeStatus</a>
+                {% endif %}
+                <a class="mu-action-delete" href="/manageuserstatus/?s=delete&regid={{row.regid}}">Delete</a>
+            </td>
+        </tr>
+        <tr><td colspan="10" class="mu-divider"></td></tr>
+        {% endfor %}
+    </table>
+
+    <br class="mu-clearfix" />
+</div>
+

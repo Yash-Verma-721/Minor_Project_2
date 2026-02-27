@@ -1,0 +1,91 @@
+{% load static %}
+
+{% include 'core/userheader.html' %}
+
+{% include 'core/usernav.html' %}
+
+<link rel="stylesheet" href="{% static 'core/css/viewnotes.css' %}">
+
+<div class="vn-container">
+    <div class="vn-header">
+        <h1 class="vn-title">My Documents</h1>
+        <p class="vn-subtitle">Manage and share your encrypted files</p>
+    </div>
+
+    {% if notes %}
+    <div class="vn-files-grid">
+        {% for n in notes %}
+        <div class="vn-file-card">
+            <div class="vn-file-icon">📄</div>
+            <h3 class="vn-file-title">{{n.title}}</h3>
+            <p class="vn-file-category">{{n.category}}</p>
+            <p class="vn-file-description">{{n.description|truncatewords:20}}</p>
+            <p class="vn-file-date">Uploaded: {{n.upload_time}}</p>
+
+            <div class="vn-file-actions">
+                <a href="/shared/{{n.share_token}}/" class="vn-btn vn-btn-download" download>
+                    📥 Download
+                </a>
+                <a href="/generate-link/{{n.id}}" class="vn-btn vn-btn-share">
+                    🔗 Share Link
+                </a>
+                <a href="/delete-note/{{n.id}}/" class="vn-btn vn-btn-delete"
+                    onclick="return confirm('Delete this file?')">
+                    🗑 Delete
+                </a>
+            </div>
+
+            {% if n.is_shared %}
+
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="vn-empty">
+        <p>No documents uploaded yet.</p>
+    </div>
+    {% endif %}
+
+    {% if link %}
+    <div class="vn-link-generated">
+        <p class="vn-link-label">Share Link Generated:</p>
+        <input type="text" class="vn-link-input" value="{{link}}" readonly id="share-link">
+        <button class="vn-btn vn-btn-copy" onclick="copyToClipboard('share-link')">
+            Copy Link
+        </button>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    function copyToClipboard(elementId) {
+        const element = document.getElementById(elementId);
+        element.select();
+        document.execCommand('copy');
+        alert('Link copied to clipboard!');
+    }
+
+    function copyLink(id) {
+        const btn = event.target;
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `/generate-link/${id}/`, true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                setTimeout(() => {
+                    const linkInput = document.getElementById(`link-${id}`);
+                    if (linkInput) {
+                        linkInput.select();
+                        document.execCommand('copy');
+                        btn.textContent = '✓ Copied';
+                        setTimeout(() => {
+                            btn.textContent = '🔗 Share Link';
+                            location.reload();
+                        }, 2000);
+                    }
+                }, 500);
+            }
+        };
+        xhr.send();
+    }
+</script>

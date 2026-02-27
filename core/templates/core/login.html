@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Login | SecureShare</title>
+    <link rel="stylesheet" href="{% static 'core/css/login_style.css' %}">
+</head>
+
+<body>
+
+<div class="secure-login-wrapper">
+
+    <div class="secure-login-card">
+
+        <h2 class="secure-login-title">
+            SecureShare Login
+        </h2>
+
+        <p class="secure-login-subtitle">
+            Access your encrypted documents safely
+        </p>
+        <font style="font-size:20px;color:blue;">{{output}}</font>	
+
+        <form method="POST" action="{% url 'login' %}" class="secure-login-form">
+            {% csrf_token %}
+
+            <div class="secure-input-group">
+                <label>Email</label>
+                <input type="text" name="email" required>
+            </div>
+
+            <div class="secure-input-group">
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <input type="submit" value="Login" class="secure-login-btn">
+                
+            </input>
+
+        </form>
+
+        <p class="secure-register-link">
+            New user?
+            <a href="{% url 'signup' %}">Create Account</a>
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

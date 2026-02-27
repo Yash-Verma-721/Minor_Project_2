@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Secure Document Dashboard</title>
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+</head>
+
+<body>
+
+<header>
+    <h2>Secure Document Sharing System</h2>
+    <nav>
+        <a href="#">Upload Document</a>
+        <a href="#">My Files</a>
+        <a href="#">Shared Links</a>
+        <a href="/logout/">Logout</a>
+    </nav>
+</header>
+
+<hr>
+
+<section>
+    <h3>Dashboard</h3>
+    <p>Manage and securely share your encrypted documents.</p>
+</section>
+
+<section>
+    <h3>Quick Actions</h3>
+
+    <div>
+        <button>Upload New File</button>
+        <button>View Uploaded Files</button>
+        <button>Generate Share Link</button>
+    </div>
+</section>
+
+<hr>
+
+<section>
+    <h3>Recent Documents</h3>
+
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>File Name</th>
+            <th>Status</th>
+            <th>Shared</th>
+            <th>Action</th>
+        </tr>
+
+        <tr>
+            <td>example.pdf</td>
+            <td>Encrypted</td>
+            <td>No</td>
+            <td>
+                <button>Download</button>
+                <button>Share</button>
+            </td>
+        </tr>
+
+    </table>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Secure Share</title>
+    <link rel="stylesheet" href="{% static 'core/css/signup.css' %}">
+</head>
+
+<body>
+    <nav class="ss-signup-navbar">
+        <div class="ss-signup-container">
+            <div class="ss-signup-logo">🔐 Secure Share</div>
+        </div>
+
+    </nav>
+
+    <div class="ss-signup-wrapper">
+        <div class="ss-signup-container">
+            <div class="ss-signup-form-box">
+                <h1 class="ss-signup-title">Create Account</h1>
+                <p class="ss-signup-subtitle">Join Secure Share today</p><br>
+                <span style="color: blue;">
+                    {% if output %}
+                        {{output}}
+                    {% endif %}
+                </span>
+
+
+                <form method="post" action="{% url 'signup' %}" class="ss-signup-form">
+                    {% csrf_token %}
+                    <div class="ss-signup-form-group">
+                        <label for="username" class="ss-signup-label">Username</label>
+                        <input type="text" id="username" name="username" class="ss-signup-input" required>
+                    </div>
+
+                    <div class="ss-signup-form-group">
+                        <label for="email" class="ss-signup-label">Email</label>
+                        <input type="email" id="email" name="email" class="ss-signup-input" required>
+                    </div>
+
+                    <div class="ss-signup-form-group">
+                        <label for="password" class="ss-signup-label">Password</label>
+                        <input type="password" id="password" name="password" class="ss-signup-input" required>
+                    </div>
+
+                    <div class="ss-signup-form-group">
+                        <label for="confirm_password" class="ss-signup-label">Confirm Password</label>
+                        <input type="password" id="confirm_password" name="confirm_password" class="ss-signup-input"
+                            required>
+                    </div>
+                    <div class="ss-signup-form-group">
+                        <label for="mobile_no" class="ss-signup-label">Mobile Number</label>
+                        <input type="tel" minlength="10" maxlength="10" id="mobile_no" name="mobile_no" pattern="[0-9]{10}" placeholder="Enter 10-digit mobile number"
+                            class="ss-signup-input" required>
+                    </div>
+
+
+                    <input type="submit" value="signup" class="ss-signup-btn"></input>
+                </form>
+
+                <p class="ss-signup-login-link">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="ss-signup-footer">
+        <div class="ss-signup-container">
+            <p>&copy; 2026 Secure Share. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

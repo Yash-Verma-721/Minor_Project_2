@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Share - Encrypted File Sharing</title>
+    <link rel="stylesheet" href="{% static 'core/css/landing.css' %}">
+</head>
+<body>
+    <nav class="ss-landing-navbar">
+        <div class="ss-landing-container">
+            <div class="ss-landing-logo">🔐 Secure Share</div>
+            <div class="ss-landing-nav-buttons">
+                <a href="{% url 'login' %}" class="ss-landing-btn ss-landing-btn-secondary">Login</a>
+                <a href="{% url 'signup' %}" class="ss-landing-btn ss-landing-btn-primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="ss-landing-hero">
+        <div class="ss-landing-container">
+            <h1 class="ss-landing-hero-title">Share Files Securely</h1>
+            <p class="ss-landing-hero-subtitle">End-to-end encrypted file sharing. Simple, fast, and secure.</p>
+            <a href="{% url 'login' %}" class="ss-landing-btn ss-landing-btn-primary ss-landing-btn-large">Get Started</a>
+        </div>
+    </section>
+
+    <section class="ss-landing-features">
+        <div class="ss-landing-container">
+            <h2 class="ss-landing-section-title">Why Secure Share?</h2>
+            <div class="ss-landing-features-grid">
+                <div class="ss-landing-feature-card">
+                    <div class="ss-landing-feature-icon">📤</div>
+                    <h3>Easy Upload</h3>
+                    <p>Upload files in seconds. No complex setup required.</p>
+                </div>
+                <div class="ss-landing-feature-card">
+                    <div class="ss-landing-feature-icon">🔒</div>
+                    <h3>Military Encryption</h3>
+                    <p>AES-256 encryption keeps your files protected always.</p>
+                </div>
+                <div class="ss-landing-feature-card">
+                    <div class="ss-landing-feature-icon">🔗</div>
+                    <h3>Share via Link</h3>
+                    <p>Generate secure links with expiration and download limits.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ss-landing-cta">
+        <div class="ss-landing-container">
+            <h2 class="ss-landing-cta-title">Ready to Share Securely?</h2>
+            <p class="ss-landing-cta-text">Start protecting your files today. No credit card required.</p>
+            <a href="{% url 'signup' %}" class="ss-landing-btn ss-landing-btn-primary ss-landing-btn-large">Create Free Account</a>
+        </div>
+    </section>
+
+    <footer class="ss-landing-footer">
+        <div class="ss-landing-container">
+            <p>&copy; 2026 Secure Share. All rights reserved.</p>
+            <div class="ss-landing-footer-links">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

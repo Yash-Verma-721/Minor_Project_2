@@ -1,0 +1,51 @@
+{% load static %}
+
+{% include 'core/userheader.html' %}
+
+{% include 'core/usernav.html' %}
+
+<link rel="stylesheet" href="{% static 'core/css/sharenotes.css' %}">
+
+<div class="sn-container">
+    <div class="sn-page">
+        {% if output %}
+            <div class="sn-output">{{output}}</div>
+        {% endif %}
+        
+        <h2 class="sn-title">Upload Document</h2>
+        
+        <form method="post" action="/sharenotes/" enctype="multipart/form-data" class="sn-form">
+            {% csrf_token %}
+            
+            <div class="sn-form-group">
+                <label class="sn-label">Title</label>
+                <input class="sn-input" type="text" name="title" required>
+            </div>
+            
+            <div class="sn-form-group">
+                <label class="sn-label">Category</label>
+                <select class="sn-select" name="category" required>
+                    <option>Select Category</option>
+                    <option>Project Report</option>
+                    <option>Synopsis</option>
+                    <option>Assignments</option>
+                    <option>Thesis</option>
+                    <option>Research Paper</option>
+                </select>
+            </div>
+            
+            <div class="sn-form-group">
+                <label class="sn-label">Description</label>
+                <textarea class="sn-textarea" name="description"></textarea>
+            </div>
+            
+            <div class="sn-form-group">
+                <label class="sn-label">Upload File</label>
+                <input class="sn-input" type="file" name="file" required>
+            </div>
+            
+            <button class="sn-submit" type="submit">Upload</button>
+        </form>
+    </div>
+</div>
+

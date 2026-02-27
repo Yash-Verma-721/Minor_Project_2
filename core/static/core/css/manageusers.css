@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.mu-page {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.mu-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 32px;
+}
+
+.mu-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.mu-table th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.mu-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+    color: #333;
+}
+
+.mu-table tr:hover {
+    background: #f5f7fa;
+}
+
+.mu-status-active {
+    color: #4caf50;
+    font-weight: 600;
+}
+
+.mu-status-inactive {
+    color: #ff9800;
+    font-weight: 600;
+}
+
+.mu-actions a {
+    text-decoration: none;
+    padding: 6px 12px;
+    margin-right: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.mu-action-change {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+}
+
+.mu-action-change:hover {
+    background: rgba(102, 126, 234, 0.2);
+}
+
+.mu-action-delete {
+    background: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+}
+
+.mu-action-delete:hover {
+    background: rgba(244, 67, 54, 0.2);
+}
+
+.mu-divider {
+    height: 1px;
+    background: #e0e0e0;
+}
+
+.mu-clearfix {
+    clear: both;
+}
+
+@media (max-width: 768px) {
+    .mu-page {
+        padding: 16px;
+    }
+
+    .mu-title {
+        font-size: 22px;
+    }
+
+    .mu-table {
+        font-size: 12px;
+    }
+
+    .mu-table th,
+    .mu-table td {
+        padding: 8px;
+    }
+
+    .mu-actions a {
+        display: block;
+        margin-bottom: 4px;
+        margin-right: 0;
+    }
+}

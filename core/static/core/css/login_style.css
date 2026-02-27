@@ -1,0 +1,88 @@
+/* Page Background */
+.secure-login-wrapper{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+}
+
+/* Login Card */
+.secure-login-card{
+    background:white;
+    padding:40px;
+    width:350px;
+    border-radius:8px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.25);
+    text-align:center;
+}
+
+/* Title */
+.secure-login-title{
+    margin-bottom:10px;
+    color:#1e293b;
+}
+
+/* Subtitle */
+.secure-login-subtitle{
+    font-size:14px;
+    color:#64748b;
+    margin-bottom:25px;
+}
+
+/* Form */
+.secure-login-form{
+    text-align:left;
+}
+
+/* Input Group */
+.secure-input-group{
+    margin-bottom:18px;
+}
+
+.secure-input-group label{
+    display:block;
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+.secure-input-group input{
+    width:100%;
+    padding:10px;
+    border:1px solid #cbd5e1;
+    border-radius:4px;
+    outline:none;
+}
+
+/* Focus Effect */
+.secure-input-group input:focus{
+    border-color:#2563eb;
+}
+
+/* Button */
+.secure-login-btn{
+    width:100%;
+    padding:12px;
+    background:#2563eb;
+    color:white;
+    border:none;
+    border-radius:4px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.secure-login-btn:hover{
+    background:#1d4ed8;
+}
+
+/* Register Link */
+.secure-register-link{
+    margin-top:18px;
+    font-size:14px;
+    text-align:center;
+}
+
+.secure-register-link a{
+    color:#2563eb;
+    text-decoration:none;
+}

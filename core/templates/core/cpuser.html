@@ -1,0 +1,64 @@
+{% load static %}
+
+{% include 'core/userheader.html' %}
+
+{% include 'core/usernav.html' %}
+
+<link rel="stylesheet" href="{% static 'core/css/cpuser.css' %}">
+
+<script>
+    function togglePassword(inputId, iconId) {
+      var input = document.getElementById(inputId);
+      var icon = document.getElementById(iconId);
+      if (input.type === "password") {
+        input.type = "text";
+        icon.textContent = "Hide";
+      } else {
+        input.type = "password";
+        icon.textContent = "View";
+      }
+    }
+</script>
+
+<div class="cpu-container">
+    <div class="cpu-page">
+        {% if output %}
+            <div class="cpu-output">{{output}}</div>
+        {% endif %}
+        
+        <h2 class="cpu-title">Change Password</h2>
+        
+        <form method="post" action="/cpuser/" class="cpu-form">
+            {% csrf_token %}
+            
+            <div class="cpu-form-group">
+                <label class="cpu-label">Old Password</label>
+                <div class="cpu-input-wrapper">
+                    <input class="cpu-input" id="pwd" type="password" name="opassword"/>
+                    <button type="button" class="cpu-toggle-btn" onclick="togglePassword('pwd', 'toggle1')" id="toggle1">View</button>
+                </div>
+            </div>
+            
+            <div class="cpu-form-group">
+                <label class="cpu-label">New Password</label>
+                <div class="cpu-input-wrapper">
+                    <input class="cpu-input" id="pwd1" type="password" name="npassword"/>
+                    <button type="button" class="cpu-toggle-btn" onclick="togglePassword('pwd1', 'toggle2')" id="toggle2">View</button>
+                </div>
+            </div>
+            
+            <div class="cpu-form-group">
+                <label class="cpu-label">Confirm New Password</label>
+                <div class="cpu-input-wrapper">
+                    <input class="cpu-input" id="pwd2" type="password" name="cnpassword"/>
+                    <button type="button" class="cpu-toggle-btn" onclick="togglePassword('pwd2', 'toggle3')" id="toggle3">View</button>
+                </div>
+            </div>
+            
+            <div class="cpu-submit-wrapper">
+                <input class="cpu-submit" type="submit" value="Change Password"/>
+            </div>
+        </form>
+    </div>
+</div>
+
