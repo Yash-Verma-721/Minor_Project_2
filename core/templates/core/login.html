@@ -1,57 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     <meta charset="UTF-8">
     <title>Login | SecureShare</title>
     <link rel="stylesheet" href="{% static 'core/css/login_style.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/landing.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"> </script>
+
 </head>
 
 <body>
 
     {% include 'core/nav.html' %}
 
-<div class="secure-login-wrapper">
 
-    <div class="secure-login-card">
 
-        <h2 class="secure-login-title">
-            SecureShare Login
-        </h2>
 
-        <p class="secure-login-subtitle">
-            Access your encrypted documents safely
-        </p>
-        <font style="font-size:20px;color:blue;">{{output}}</font>	
+    <div class="secure-login-wrapper">
 
-        <form method="POST" action="{% url 'login' %}" class="secure-login-form">
-            {% csrf_token %}
+        <div class="secure-login-card">
 
-            <div class="secure-input-group">
-                <label>Email</label>
-                <input type="text" name="email" required>
+            <h2 class="secure-login-title">
+                SecureShare Login
+            </h2>
+
+            <p class="secure-login-subtitle">
+                Access your encrypted documents safely
+            </p>
+            {% if output %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" id="outputAlert">
+                <strong>{{output}}!</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+            {% endif %}
 
-            <div class="secure-input-group">
-                <label>Password</label>
-                <input type="password" name="password" required>
-            </div>
+            <form method="POST" action="{% url 'login' %}" class="secure-login-form">
+                {% csrf_token %}
 
-            <input type="submit" value="Login" class="secure-login-btn">
-                
-            </input>
+                <div class="secure-input-group">
+                    <label>Email</label>
+                    <input type="text" name="email" required>
+                </div>
 
-        </form>
+                <div class="secure-input-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+                </div>
 
-        <p class="secure-register-link">
-            New user?
-            <a href="{% url 'signup' %}">Create Account</a>
-        </p>
+                <input type="submit" value="Login" class="secure-login-btn">
+
+                </input>
+
+            </form>
+
+            <p class="secure-register-link">
+                New user?
+                <a href="{% url 'signup' %}">Create Account</a>
+            </p>
+
+        </div>
 
     </div>
 
-</div>
-
- {% include 'core/footer.html' %}
-
+    {% include 'core/footer.html' %}

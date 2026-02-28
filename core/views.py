@@ -51,7 +51,7 @@ def signup(request):
 
         send_verification_mail(email, username)
 
-        return render(request,"core/signup.html",{"output":"User register successfully.... Please wait for admin approval"})  
+        return render(request,"core/signup.html",{"output":"User register successfully.... Please wait for admin approval or check your email to verify account"})  
 
 def verify(request):
     vemail=request.GET.get("vemail")
@@ -88,26 +88,7 @@ def user_login(request):
             return render(request,"core/login.html",{"output":"Invalid user or verify your account...."})  
 
 
-# def sharenotes(request):
-#     if request.method=="GET":
-#         return render(request,"core/sharenotes.html",{"sname":request.session["sname"],"output":""})
-#     else:
 
-#         #to recieve data from ui
-#         title=request.POST.get("title")
-#         category=request.POST.get("category")
-#         description=request.POST.get("description")
-
-#         #to recive file & to push file in media folder
-#         file=request.FILES["file"]
-#         fs = FileSystemStorage()
-#         filename = fs.save(file.name,file)
-
-#         p=models.sharenotes(title=title,category=category,decription=description,filename=filename,uid=request.session["sunm"],info=time.asctime())
-#         p.save()
-
-#         return render(request,"core/sharenotes.html",{"sname":request.session["sname"],"output":"Content uploaded successfully....."})  
-    
 from django.core.files.base import ContentFile
 from .utils import generate_key, encrypt_data
 

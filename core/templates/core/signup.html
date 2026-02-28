@@ -8,6 +8,8 @@
     <title>Sign Up - Secure Share</title>
     <link rel="stylesheet" href="{% static 'core/css/signup.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/landing.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
@@ -18,14 +20,15 @@
             <div class="ss-signup-form-box">
                 <h1 class="ss-signup-title">Create Account</h1>
                 <p class="ss-signup-subtitle">Join Secure Share today</p><br>
-                <span style="color: blue;">
-                    {% if output %}
-                        {{output}}
-                    {% endif %}
-                </span>
+               {% if output %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" id="outputAlert">
+                <strong>{{output}}!</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
 
 
-                <form method="post" action="/Signup/" class="ss-signup-form">
+                <form method="post" action="/signup/" class="ss-signup-form">
                     {% csrf_token %}
                     <div class="ss-signup-form-group">
                         <label for="username" class="ss-signup-label">Username</label>
@@ -54,7 +57,7 @@
                     </div>
 
 
-                    <input type="submit" value="Signup" class="ss-signup-btn"></input>
+                    <input type="submit" value="signup" class="ss-signup-btn"></input>
                 </form>
 
                 <p class="ss-signup-login-link">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
