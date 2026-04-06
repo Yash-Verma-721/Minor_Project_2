@@ -1,13 +1,85 @@
 {% load static %}
 
 {% include 'core/userheader.html' %}
-
 {% include 'core/usernav.html' %}
+
+<link rel="stylesheet" href="{% static 'core/css/userhome.css' %}">
 
 <br class="cpa-clearfix" />
 
 <div class="uh-container">
-    <h1 class="uh-title">Welcome to Your Dashboard , {{sname}}</h1>
-    
-    <div class="uh-info">
 
+    <!-- Welcome Section -->
+    <div class="uh-welcome-section">
+        
+        <h2>Welcome back, {{ sname }} 👋</h2>
+        <p>Manage your secure files and sharing activity from here.</p>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="uh-stats-section">
+
+        <div class="uh-stat-card">
+            <h6>Total Files</h6>
+            <h2>{{ total_files }}</h2>
+        </div>
+
+        <div class="uh-stat-card">
+            <h6>Shared Files</h6>
+            <h2>{{ shared_files }}</h2>
+        </div>
+
+        <div class="uh-stat-card">
+            <h6>Downloads</h6>
+            <h2>{{ downloads|default:"0" }}</h2>
+        </div>
+
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="uh-actions-section">
+
+        <div class="uh-action-card">
+            <h5>📤 Upload New File</h5>
+            <p>Encrypt and upload your files securely.</p>
+            <a href="/sharenotes/" class="uh-action-btn">
+                Upload Now
+            </a>
+        </div>
+
+        <div class="uh-action-card">
+            <h5>📁 Manage Files</h5>
+            <p>View, download or share your files.</p>
+            <a href="/viewnotes/" class="uh-action-btn">
+                View Files
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="uh-recent-section">
+        <h5>🕒 Recent Activity</h5>
+
+        <ul class="uh-activity-list">
+
+            {% for file in recent_files %}
+            <li class="uh-activity-item">
+                <div>
+                    <strong>{{ file.title }}</strong><br>
+                    <small>{{ file.category }}</small>
+                </div>
+                <span class="uh-badge">New</span>
+            </li>
+            {% empty %}
+            <li class="uh-empty-state">
+                No recent activity
+            </li>
+            {% endfor %}
+
+        </ul>
+    </div>
+
+</div>
+
+{% include 'core/footer.html' %}

@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
+from django.views.decorators.cache import never_cache
 
 from  . import models
 
@@ -15,13 +16,47 @@ def contact(request):
 
 def home(request):
     return render(request, 'core/home.html')
+
+def logout(request):
+    request.session.flush()
+    return redirect("/")
+
+
+@never_cache
 def userhome(request):
+    if "sunm" not in request.session:
+        request.session['output']='You loged out your account , Please login again....'
+        return redirect("/login/")
+
+    user_email = request.session["sunm"]
+
+    # user ke notes
+    notes = models.ShareNotes.objects.filter(owner=user_email)
+
+    total_files = notes.count()
+    shared_files = notes.filter(is_shared=True).count()
+
+    recent_files = notes.order_by("-id")[:5]
+
     context = {
         "sname": request.session.get("sname"),
-        "sunm": request.session.get("sunm"),
-        "srole": request.session.get("srole")
+        "sunm": user_email,
+        "total_files": total_files,
+        "shared_files": shared_files,
+        "recent_files": recent_files,
     }
+
     return render(request, "core/userhome.html", context)
+
+
+
+# def userhome(request):
+#     context = {
+#         "sname": request.session.get("sname"),
+#         "sunm": request.session.get("sunm"),
+#         "srole": request.session.get("srole")
+#     }
+#     return render(request, "core/userhome.html", context)
 
 
 
@@ -78,25 +113,34 @@ def user_login(request):
             print(f"DEBUG: User role = {userDetails[0].role}")
             request.session['sunm']=userDetails[0].email
             request.session['sname']=userDetails[0].name
-            request.session['srole']=userDetails[0].role        
+            request.session['srole']=userDetails[0].role
+            
+            # Clear any previous messages
+            if 'output' in request.session:
+                del request.session['output']
 
             if userDetails[0].role=="admin":
                 return redirect("/myadmin/")
             else:    
                 return redirect("/userhome/")
         else:
-            return render(request,"core/login.html",{"output":"Invalid user or verify your account...."})  
+            return render(request,"core/login.html",{"output":"Invalid user or verify your account...."}) 
 
 
 
 from django.core.files.base import ContentFile
 from .utils import generate_key, encrypt_data
 
+@never_cache
 def sharenotes(request):
+    
+    if "sunm" not in request.session:
+        request.session['output']='You loged out your account , Please login again....'
+        return redirect("/login/")
 
     if request.method == "GET":
         return render(request,"core/sharenotes.html",
-        {"sname":request.session["sname"]})
+        {"sname":request.session.get("sname")})
     
 
     title = request.POST.get("title")
@@ -130,8 +174,11 @@ def sharenotes(request):
     {"sname":request.session["sname"],
      "output":" Upload File Successfully..."})
 
-
+@never_cache
 def viewnotes(request):
+    if "sunm" not in request.session:
+        request.session['output']='You loged out your account , Please login again....'
+        return redirect("/login/")
 
     notes = models.ShareNotes.objects.filter(
         owner=request.session["sunm"]
@@ -175,8 +222,14 @@ def generate_link(request, id):
 )
 
 
-
+@never_cache
 def cpuser(request):
+    #because only logged in user can change password, so we will check session for email, if not found then we will redirect to login page.
+    # and the never_cache the session is expierd after the logout, so user can not access cpuser page after logout by using browser back button.
+    if "sunm" not in request.session:
+        request.session['output']='You loged out your account , Please login again....'
+        return redirect("/login/")
+    
     email=request.session["sunm"]
     name=request.session["sname"]
     if request.method=="GET":

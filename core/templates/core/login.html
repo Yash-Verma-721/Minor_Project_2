@@ -30,9 +30,9 @@
             <p class="secure-login-subtitle">
                 Access your encrypted documents safely
             </p>
-            {% if output %}
+            {% if output or request.session.output %}
             <div class="alert alert-warning alert-dismissible fade show" role="alert" id="outputAlert">
-                <strong>{{output}}!</strong>
+                <strong>{{ output|default:request.session.output }}!</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             {% endif %}
