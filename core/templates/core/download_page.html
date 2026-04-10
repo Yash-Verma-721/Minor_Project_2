@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Downloading...</title>
+    <link rel="stylesheet" href="{% static 'core/css/landing.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/download_page.css' %}">
+
+    <script>
+        window.onload = function() {
+            window.location.href = "/download/{{ token }}/";
+            setTimeout(function(){
+                window.location.href = "/";
+            }, 5000);
+        }
+    </script>
+
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="ss-landing-navbar">
+        <div class="ss-landing-nav-container">
+            <div class="ss-landing-logo">
+                🔒 Secure Share
+            </div>
+            
+        </div>
+    </nav>
+
+    <!-- Download Page Container -->
+    <div class="dp-wrapper">
+        <div class="dp-container">
+
+            <div class="dp-logo">🔒</div>
+
+            <h2 class="dp-title">Thank you for visiting Us... 🙏</h2>
+            
+            <p class="dp-subtitle">
+                Your file is downloading: <b class="dp-filename">{{ filename }}</b>
+            </p>
+
+            <div class="dp-loader">
+                <div class="dp-dot"></div>
+                <div class="dp-dot"></div>
+                <div class="dp-dot"></div>
+            </div>
+
+            <a href="/" class="dp-link">Go back to Home</a>
+
+        </div>
+    </div>
+
+    {% include 'core/footer.html' %}
+
+</body>
+</html>

@@ -30,10 +30,18 @@
             <p class="secure-login-subtitle">
                 Access your encrypted documents safely
             </p>
-            {% if output or request.session.output %}
+            {% if output %}
             <div class="alert alert-warning alert-dismissible fade show" role="alert" id="outputAlert">
-                <strong>{{ output|default:request.session.output }}!</strong>
+                <strong>{{ output }}!</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+            {% if messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" id="outputAlert">
+                {% for message in messages %}
+                <strong>{{ message }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                {% endfor %}
             </div>
             {% endif %}
 

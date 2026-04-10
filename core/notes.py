@@ -7,6 +7,7 @@
 5. add common footer in every page.
 6. add details in loging page.
 7. Creation of  contact page.
+8. creation of download page.
 
 
 The remaning work list - 

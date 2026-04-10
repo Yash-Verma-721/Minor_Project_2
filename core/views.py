@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
-
+from django.contrib import messages
 from  . import models
 
 import time
@@ -25,7 +25,7 @@ def logout(request):
 @never_cache
 def userhome(request):
     if "sunm" not in request.session:
-        request.session['output']='You loged out your account , Please login again....'
+        messages.error(request, "You logged out your account, please login again.")
         return redirect("/login/")
 
     user_email = request.session["sunm"]
@@ -50,13 +50,7 @@ def userhome(request):
 
 
 
-# def userhome(request):
-#     context = {
-#         "sname": request.session.get("sname"),
-#         "sunm": request.session.get("sunm"),
-#         "srole": request.session.get("srole")
-#     }
-#     return render(request, "core/userhome.html", context)
+
 
 
 
@@ -96,10 +90,14 @@ def verify(request):
     print(f"DEBUG: Records updated={updated}")
 
     return render(request,"core/signup.html",{"output":"Account verified successfully.... "})  
-    
+
+
+@never_cache  
 def user_login(request):
-    if request.method=="GET":    
+    if request.method=="GET":   
         return render(request,"core/login.html",{"output":""})
+      
+   
     else:
         email=request.POST.get("email")
         password=request.POST.get("password")
@@ -135,7 +133,7 @@ from .utils import generate_key, encrypt_data
 def sharenotes(request):
     
     if "sunm" not in request.session:
-        request.session['output']='You loged out your account , Please login again....'
+        messages.error(request, "You logged out your account, please login again.")
         return redirect("/login/")
 
     if request.method == "GET":
@@ -176,8 +174,9 @@ def sharenotes(request):
 
 @never_cache
 def viewnotes(request):
+    
     if "sunm" not in request.session:
-        request.session['output']='You loged out your account , Please login again....'
+        messages.error(request, "You logged out your account, please login again.")
         return redirect("/login/")
 
     notes = models.ShareNotes.objects.filter(
@@ -193,7 +192,12 @@ def viewnotes(request):
         }
     )
 
+@never_cache
 def generate_link(request, id):
+
+    if "sunm" not in request.session:
+      messages.error(request, "You logged out your account, please login again.")       
+      return redirect("/login/")
 
     note = models.ShareNotes.objects.get(
         id=id,
@@ -227,7 +231,7 @@ def cpuser(request):
     #because only logged in user can change password, so we will check session for email, if not found then we will redirect to login page.
     # and the never_cache the session is expierd after the logout, so user can not access cpuser page after logout by using browser back button.
     if "sunm" not in request.session:
-        request.session['output']='You loged out your account , Please login again....'
+        messages.error(request, "You logged out your account, please login again.")
         return redirect("/login/")
     
     email=request.session["sunm"]
@@ -253,8 +257,12 @@ def cpuser(request):
 
 from django.shortcuts import get_object_or_404
 
-
+@never_cache
 def delete_note(request, id):
+
+    if "sunm" not in request.session:
+        messages.error(request, "You logged out your account, please login again.")
+        return redirect("/login/")
 
     note = get_object_or_404(
         models.ShareNotes,
@@ -276,20 +284,35 @@ def delete_note(request, id):
 
     })
 
-
+@never_cache
 def adminhome(request):
+
+    if "sunm" not in request.session:
+        messages.error(request, "You logged out your account, please login again.")
+        return redirect("/login/")
+    
     return render(request,"core/adminhome.html",{"sname":request.session["sname"]})
 
-
+@never_cache
 def manageusers(request):
+
+    if "sunm" not in request.session:
+        messages.error(request, "You logged out your account, please login again.")
+        return redirect("/login/")
+    
     userDetails=models.Signup.objects.filter(role="user")
     output = ""
     if request.GET.get("status") == "updated":
         output = "User status updated successfully...."
     return render(request,"core/manageusers.html",{"userDetails":userDetails,"sname":request.session["sname"],"output":output})    
 
-
+@never_cache
 def manageuserstatus(request):
+
+    if "sunm" not in request.session:
+        messages.error(request, "You logged out your account, please login again.")
+        return redirect("/login/")
+    
     s=request.GET.get("s")
     regid=int(request.GET.get("regid"))
 
@@ -302,8 +325,13 @@ def manageuserstatus(request):
 
     return redirect("/manageusers/?status=updated")
 
-
+@never_cache
 def cpadmin(request):
+
+    if "sunm" not in request.session:
+        messages.error(request, "You logged out your account, please login again.")
+        return redirect("/login/")
+    
     email=request.session["sunm"]
     if request.method=="GET":
         return render(request,"core/cpadmin.html",{"sname":request.session["sname"],"output":""})
@@ -334,6 +362,8 @@ import mimetypes
 from .utils import decrypt_data
 
 
+
+@never_cache
 def shared_file(request, token):
 
     note = get_object_or_404(
@@ -341,11 +371,19 @@ def shared_file(request, token):
         share_token=token
     )
 
-    logged_user = request.session.get("sunm")
+    return render(request, "core/download_page.html", {
+        "token": token,
+        "filename": note.original_filename
+    })
 
-    # OWNER OR SHARED ACCESS
-    if note.owner != logged_user and not note.is_shared:
-        return HttpResponse("Access Denied")
+
+@never_cache
+def download_file(request, token):
+
+    note = get_object_or_404(
+        models.ShareNotes,
+        share_token=token
+    )
 
     # read encrypted file
     with note.file.open("rb") as f:
@@ -360,16 +398,13 @@ def shared_file(request, token):
 
     content_type, _ = mimetypes.guess_type(filename)
 
-    # ✅ REAL FILE STREAM (IMPORTANT)
     temp_file = NamedTemporaryFile(delete=True)
     temp_file.write(decrypted)
     temp_file.seek(0)
 
-    response = FileResponse(
+    return FileResponse(
         temp_file,
         as_attachment=True,
         filename=filename,
         content_type=content_type or "application/octet-stream"
     )
-
-    return response

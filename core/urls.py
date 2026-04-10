@@ -23,6 +23,8 @@ urlpatterns = [
     path('verify/', views.verify),
     path('contact/', views.contact),
     path('logout/', views.logout, name='logout'),
+    path("shared/<uuid:token>/", views.shared_file),
+    path("download/<uuid:token>/", views.download_file),
     
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

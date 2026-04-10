@@ -23,7 +23,7 @@
             <p class="vn-file-date">Uploaded: {{n.upload_time}}</p>
 
             <div class="vn-file-actions">
-                <a href="/shared/{{n.share_token}}/" class="vn-btn vn-btn-download" download>
+                <a href="/download/{{n.share_token}}/" class="vn-btn vn-btn-download">
                     📥 Download
                 </a>
                 <a href="/generate-link/{{n.id}}" class="vn-btn vn-btn-share">
@@ -58,15 +58,15 @@
     {% endif %}
 </div>
 
- <br class="cpa-clearfix" />
- <br class="cpa-clearfix" />
- <br class="cpa-clearfix" />
- <br class="cpa-clearfix" />
- <br class="cpa-clearfix" />
- <br class="cpa-clearfix" />
- <br class="cpa-clearfix" />
- <br class="cpa-clearfix" />
- 
+<br class="cpa-clearfix" />
+<br class="cpa-clearfix" />
+<br class="cpa-clearfix" />
+<br class="cpa-clearfix" />
+<br class="cpa-clearfix" />
+<br class="cpa-clearfix" />
+<br class="cpa-clearfix" />
+<br class="cpa-clearfix" />
+
 
 
 <script>
@@ -101,6 +101,6 @@
     }
 </script>
 
- 
+
 
 {% include 'core/footer.html' %}
