@@ -8,13 +8,14 @@
 6. add details in loging page.
 7. Creation of  contact page.
 8. creation of download page.
+9. add deatils in landing page header and nav bar.
+10. add details in user and admin home page.
 
 
 The remaning work list - 
 
 1. Creation of About Us.
-2. add deatils in landing page header and nav bar.
-3. add details in user and admin home page.
+
 
     
     """

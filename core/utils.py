@@ -57,3 +57,13 @@ def send_verification_mail(user_email, username):
     msg.send()
 
     print("Verification mail sent")
+
+
+def sync_storage(user_email):
+    from django.db.models import Sum
+    from . import models
+    actual = models.ShareNotes.objects.filter(
+        owner=user_email
+    ).aggregate(total=Sum('file_size'))['total'] or 0
+    models.Signup.objects.filter(email=user_email).update(storage_used=actual)
+    return actual

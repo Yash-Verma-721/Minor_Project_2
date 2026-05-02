@@ -42,13 +42,9 @@ def userhome(request):
     # Storage quota info
     user_obj = models.Signup.objects.filter(email=user_email).first()
     
-    if user_obj:
-        actual_used = models.ShareNotes.objects.filter(
-            owner=user_email
-        ).aggregate(total=Sum('file_size'))['total'] or 0
-        if user_obj.storage_used != actual_used:
-            models.Signup.objects.filter(email=user_email).update(storage_used=actual_used)
-            user_obj.storage_used = actual_used
+    from .utils import sync_storage
+    sync_storage(user_email)
+    user_obj = models.Signup.objects.filter(email=user_email).first()
 
     storage_used  = user_obj.storage_used  if user_obj else 0
     storage_limit = user_obj.storage_limit if user_obj else 300 * 1024 * 1024
@@ -148,7 +144,7 @@ def user_login(request):
 
 
 from django.core.files.base import ContentFile
-from .utils import generate_key, encrypt_data
+from .utils import generate_key, encrypt_data, sync_storage
 
 FILE_SIZE_LIMIT    = 30  * 1024 * 1024   # 30 MB per file
 
@@ -163,15 +159,6 @@ def sharenotes(request):
     user_email = request.session["sunm"]
 
     def _get_storage_context(user_obj):
-        """Return storage display values for the template."""
-        if user_obj:
-            actual_used = models.ShareNotes.objects.filter(
-                owner=user_obj.email
-            ).aggregate(total=Sum('file_size'))['total'] or 0
-            if user_obj.storage_used != actual_used:
-                models.Signup.objects.filter(email=user_obj.email).update(storage_used=actual_used)
-                user_obj.storage_used = actual_used
-
         used  = user_obj.storage_used  if user_obj else 0
         limit = user_obj.storage_limit if user_obj else 300 * 1024 * 1024
         return {
@@ -200,16 +187,17 @@ def sharenotes(request):
         base_ctx["error"] = "File too large. Maximum allowed size is 30 MB."
         return render(request, "core/sharenotes.html", base_ctx)
 
-    if user_obj and (user_obj.storage_used + uploaded_file.size) > user_obj.storage_limit:
-        base_ctx["error"] = "Storage limit exceeded. You have used all your 300 MB quota."
-        return render(request, "core/sharenotes.html", base_ctx)
-
     # ── Encrypt & Save (unchanged logic) ─────────────────────────────────────
+
     file_data = uploaded_file.read()
     key = generate_key()
     encrypted_data = encrypt_data(file_data, key)
+    original_size = len(file_data)  # store before reading changes pointer.
 
-    original_size = uploaded_file.size  # store before reading changes pointer
+    if user_obj and (user_obj.storage_used + original_size) > user_obj.storage_limit:
+        base_ctx["error"] = "Storage limit exceeded. You have used all your 300 MB quota."
+        return render(request, "core/sharenotes.html", base_ctx)
+
 
     note = models.ShareNotes(
         title=title,
@@ -217,22 +205,18 @@ def sharenotes(request):
         description=description,
         owner=user_email,
         encryption_key=key.decode(),
-        original_filename=uploaded_file.name,
-        file_size=original_size,
+        original_filename=uploaded_file.name, 
+        file_size=original_size,   #  FIX
     )
-    # ✅ save encrypted file to MEDIA
+    #  save encrypted file to MEDIA
     note.file.save(uploaded_file.name, ContentFile(encrypted_data))
     note.save()
 
-    # ── Increment storage_used ────────────────────────────────────────────────
-    if user_obj:
-        models.Signup.objects.filter(email=user_email).update(
-            storage_used=user_obj.storage_used + original_size
-        )
+    sync_storage(user_email)
 
-    success_ctx = {"sname": request.session["sname"], "output": "Upload Successful!"}
     # Refresh user_obj to get updated storage_used
     user_obj = models.Signup.objects.filter(email=user_email).first()
+    success_ctx = {"sname": request.session["sname"], "output": "Upload Successful!"}
     success_ctx.update(_get_storage_context(user_obj))
     return render(request, "core/sharenotes.html", success_ctx)
 
@@ -346,11 +330,8 @@ def delete_note(request, id):
     # delete database record
     note.delete()
 
-    # Update storage quota (clamp at 0 to avoid negatives)
-    user_obj = models.Signup.objects.filter(email=user_email).first()
-    if user_obj and file_size > 0:
-        new_used = max(0, user_obj.storage_used - file_size)
-        models.Signup.objects.filter(email=user_email).update(storage_used=new_used)
+    from .utils import sync_storage
+    sync_storage(user_email)
 
     return render(request, "core/viewnotes.html", {
         "notes": models.ShareNotes.objects.filter(owner=user_email),
