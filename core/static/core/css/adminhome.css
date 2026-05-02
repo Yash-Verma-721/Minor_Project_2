@@ -1,0 +1,145 @@
+
+/* Admin Home Styles */
+
+.ah-dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Welcome Banner */
+.ah-welcome-banner {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 40px 30px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+    color: white;
+}
+
+.ah-welcome-title {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.ah-welcome-title span {
+    color: #ffd700;
+    font-style: normal;
+}
+
+.ah-welcome-subtitle {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+}
+
+/* Quick Links Grid */
+.ah-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.ah-link-card {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 30px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.ah-link-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.2);
+    border-color: #667eea;
+    text-decoration: none;
+}
+
+.ah-link-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.ah-link-card:hover .ah-link-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.ah-link-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.ah-link-card:hover .ah-link-title {
+    color: #667eea;
+}
+
+.ah-link-desc {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.ah-link-arrow {
+    font-size: 12px;
+    font-weight: 600;
+    color: #667eea;
+    transition: all 0.3s ease;
+}
+
+.ah-link-card:hover .ah-link-arrow {
+    transform: translateX(5px);
+}
+
+/* Logout Card Styling */
+.ah-link-card[style*="border-color:rgba(248,113,113,0.18)"] {
+    border-color: #f87171 !important;
+}
+
+.ah-link-card[style*="border-color:rgba(248,113,113,0.18)"]:hover {
+    box-shadow: 0 12px 30px rgba(248, 113, 113, 0.2) !important;
+    border-color: #ef4444 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .ah-dashboard-container {
+        padding: 20px 15px;
+    }
+
+    .ah-welcome-banner {
+        padding: 30px 20px;
+    }
+
+    .ah-welcome-title {
+        font-size: 24px;
+    }
+
+    .ah-links-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .ah-link-card {
+        padding: 20px;
+    }
+}

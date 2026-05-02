@@ -25,7 +25,10 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path("shared/<uuid:token>/", views.shared_file),
     path("download/<uuid:token>/", views.download_file),
-    
+
+    # ── Secure token-based sharing (new) ──────────────────────────────────────
+    path("share/<int:file_id>/", views.create_shared_link, name="create_shared_link"),
+    path("sdownload/", views.shared_link_download, name="shared_link_download"),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

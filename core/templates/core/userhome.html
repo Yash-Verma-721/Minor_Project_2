@@ -34,7 +34,26 @@
             <h2>{{ downloads|default:"0" }}</h2>
         </div>
 
+        <!-- Storage quota card -->
+        <div class="uh-stat-card" style="grid-column: 1 / -1;">
+            <h6 style="margin-bottom:.6rem;">💾 Storage</h6>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;">
+                <span style="font-size:.85rem;color:#a0aec0;">{{ storage_used_mb }} MB used</span>
+                <span style="font-size:.85rem;color:#63b3ed;font-weight:700;">{{ storage_limit_mb }} MB total</span>
+            </div>
+            <div style="height:10px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;">
+                <div style="height:100%;width:{{ storage_pct }}%;border-radius:99px;
+                    background:linear-gradient(90deg,
+                    {% if storage_pct >= 90 %}#fc8181,#e53e3e{% elif storage_pct >= 70 %}#f6ad55,#dd6b20{% else %}#63b3ed,#667eea{% endif %});
+                    transition:width .5s ease;"></div>
+            </div>
+            <small style="color:#718096;font-size:.75rem;margin-top:.35rem;display:block;">
+                {{ storage_pct }}% used &mdash; {{ storage_limit_mb|floatformat:0|add:"0"|add:" MB" }} limit per account
+            </small>
+        </div>
+
     </div>
+
 
     <!-- Quick Actions -->
     <div class="uh-actions-section">

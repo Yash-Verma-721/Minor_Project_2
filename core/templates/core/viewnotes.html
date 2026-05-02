@@ -6,6 +6,173 @@
 
 <link rel="stylesheet" href="{% static 'core/css/viewnotes.css' %}">
 
+<style>
+    /* ── Button Layout Overrides (Cache-busting) ─────────────────────────── */
+    .vn-file-actions {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px !important;
+        margin-bottom: 12px;
+    }
+    .vn-btn {
+        width: 100%;
+        padding: 8px !important;
+        font-size: 13px !important;
+        display: flex !important;
+        flex-direction: row; /* Icon and text side-by-side */
+        gap: 6px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    /* ── Share Modal ─────────────────────────────────────────────────────────── */
+    .sl-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, .65);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sl-overlay.active {
+        display: flex;
+    }
+
+    .sl-modal {
+        background: #1a1a2e;
+        border: 1px solid rgba(99, 179, 237, .25);
+        border-radius: 16px;
+        padding: 2rem;
+        width: min(480px, 95vw);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, .6);
+        animation: sl-pop .22s ease;
+    }
+
+    @keyframes sl-pop {
+        from {
+            transform: scale(.88);
+            opacity: 0;
+        }
+
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .sl-modal h3 {
+        margin: 0 0 1.2rem;
+        color: #63b3ed;
+        font-size: 1.15rem;
+    }
+
+    .sl-field {
+        display: flex;
+        flex-direction: column;
+        gap: .3rem;
+        margin-bottom: 1rem;
+    }
+
+    .sl-field label {
+        font-size: .78rem;
+        color: #a0aec0;
+    }
+
+    .sl-field input[type="number"] {
+        background: #16213e;
+        border: 1px solid rgba(99, 179, 237, .25);
+        border-radius: 8px;
+        padding: .5rem .75rem;
+        color: #e2e8f0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .sl-link-row {
+        display: flex;
+        gap: .5rem;
+        margin-top: 1rem;
+    }
+
+    .sl-link-row input {
+        flex: 1;
+        background: #16213e;
+        border: 1px solid rgba(99, 179, 237, .35);
+        border-radius: 8px;
+        padding: .5rem .75rem;
+        color: #e2e8f0;
+        font-size: .82rem;
+        min-width: 0;
+    }
+
+    .sl-meta {
+        font-size: .8rem;
+        color: #a0aec0;
+        margin-top: .6rem;
+        line-height: 1.7;
+    }
+
+    .sl-meta span {
+        color: #68d391;
+        font-weight: 600;
+    }
+
+    .sl-actions {
+        display: flex;
+        gap: .75rem;
+        margin-top: 1.4rem;
+        flex-wrap: wrap;
+    }
+
+    .sl-btn {
+        flex: 1;
+        padding: .55rem 1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: .88rem;
+        font-weight: 600;
+        transition: opacity .18s;
+    }
+
+    .sl-btn:hover {
+        opacity: .85;
+    }
+
+    .sl-btn-generate {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #fff;
+    }
+
+    .sl-btn-copy {
+        background: linear-gradient(135deg, #38a169, #2f855a);
+        color: #fff;
+    }
+
+    .sl-btn-close {
+        background: rgba(255, 255, 255, .08);
+        color: #e2e8f0;
+    }
+
+    .sl-error {
+        color: #fc8181;
+        font-size: .84rem;
+        margin-top: .6rem;
+        display: none;
+    }
+
+    .sl-spinner {
+        display: none;
+        text-align: center;
+        padding: .5rem 0;
+        color: #63b3ed;
+    }
+</style>
+
 <div class="vn-container">
     <div class="vn-header">
         <h1 class="vn-title">My Documents</h1>
@@ -29,6 +196,12 @@
                 <a href="/generate-link/{{n.id}}" class="vn-btn vn-btn-share">
                     🔗 Share Link
                 </a>
+                {# ── New secure share button ── #}
+                <button class="vn-btn vn-btn-share" onclick="openShareModal({{n.id}}, '{{n.title|escapejs}}')"
+                    id="secure-share-btn-{{n.id}}"
+                    style="background:linear-gradient(135deg,#4e54c8,#8f94fb);border:none;color:white;cursor:pointer;">
+                    🛡 Secure Share
+                </button>
                 <a href="/delete-note/{{n.id}}/" class="vn-btn vn-btn-delete"
                     onclick="return confirm('Delete this file?')">
                     🗑 Delete
@@ -36,7 +209,6 @@
             </div>
 
             {% if n.is_shared %}
-
             {% endif %}
         </div>
         {% endfor %}
@@ -61,46 +233,143 @@
 <br class="cpa-clearfix" />
 <br class="cpa-clearfix" />
 <br class="cpa-clearfix" />
-<br class="cpa-clearfix" />
-<br class="cpa-clearfix" />
-<br class="cpa-clearfix" />
-<br class="cpa-clearfix" />
-<br class="cpa-clearfix" />
 
+<!-- ── Secure Share Modal ─────────────────────────────────────────────────── -->
+<div class="sl-overlay" id="sl-overlay" onclick="closeOnBackdrop(event)">
+    <div class="sl-modal" role="dialog" aria-modal="true" aria-labelledby="sl-modal-title">
+        <h3 id="sl-modal-title">🛡 Secure Share: <span id="sl-file-name"></span></h3>
 
+        <div class="sl-field">
+            <label for="sl-expires">Expires in (hours)</label>
+            <input type="number" id="sl-expires" value="24" min="1" max="720">
+        </div>
+        <div class="sl-field">
+            <label for="sl-max-dl">Max downloads</label>
+            <input type="number" id="sl-max-dl" value="5" min="1" max="100">
+        </div>
+
+        <div class="sl-actions">
+            <button class="sl-btn sl-btn-generate" id="sl-generate-btn" onclick="generateLink()">
+                ✨ Generate Link
+            </button>
+            <button class="sl-btn sl-btn-close" onclick="closeModal()">✕ Close</button>
+        </div>
+
+        <div class="sl-spinner" id="sl-spinner">⏳ Generating…</div>
+        <div class="sl-error" id="sl-error"></div>
+
+        <div id="sl-result" style="display:none">
+            <div class="sl-link-row">
+                <input type="text" id="sl-generated-link" readonly>
+                <button class="sl-btn sl-btn-copy" style="flex:unset;padding:.55rem .9rem"
+                    onclick="copyGeneratedLink()">📋 Copy</button>
+            </div>
+            <p class="sl-meta">
+                ⏳ Expires: <span id="sl-meta-expires"></span><br>
+                🔢 Max downloads: <span id="sl-meta-maxdl"></span><br>
+                ✅ Downloads used: <span id="sl-meta-used">0</span>
+            </p>
+        </div>
+    </div>
+</div>
 
 <script>
+    let _currentFileId = null;
+
+    function openShareModal(fileId, fileName) {
+        _currentFileId = fileId;
+        document.getElementById('sl-file-name').textContent = fileName;
+        document.getElementById('sl-result').style.display = 'none';
+        document.getElementById('sl-error').style.display = 'none';
+        document.getElementById('sl-spinner').style.display = 'none';
+        document.getElementById('sl-expires').value = 24;
+        document.getElementById('sl-max-dl').value = 5;
+        document.getElementById('sl-overlay').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('sl-overlay').classList.remove('active');
+        _currentFileId = null;
+    }
+
+    function closeOnBackdrop(e) {
+        if (e.target === document.getElementById('sl-overlay')) closeModal();
+    }
+
+    function getCookie(name) {
+        let v = null;
+        document.cookie.split(';').forEach(c => {
+            c = c.trim();
+            if (c.startsWith(name + '=')) v = decodeURIComponent(c.slice(name.length + 1));
+        });
+        return v;
+    }
+
+    function generateLink() {
+        if (!_currentFileId) return;
+
+        const expires_hours = parseInt(document.getElementById('sl-expires').value, 10) || 24;
+        const max_downloads = parseInt(document.getElementById('sl-max-dl').value, 10) || 5;
+
+        document.getElementById('sl-spinner').style.display = 'block';
+        document.getElementById('sl-error').style.display = 'none';
+        document.getElementById('sl-result').style.display = 'none';
+        document.getElementById('sl-generate-btn').disabled = true;
+
+        fetch(`/share/${_currentFileId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ expires_hours, max_downloads }),
+        })
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('sl-spinner').style.display = 'none';
+                document.getElementById('sl-generate-btn').disabled = false;
+
+                if (data.error) {
+                    showError(data.error);
+                    return;
+                }
+                document.getElementById('sl-generated-link').value = data.url;
+                document.getElementById('sl-meta-expires').textContent = data.expires_at;
+                document.getElementById('sl-meta-maxdl').textContent = data.max_downloads;
+                document.getElementById('sl-meta-used').textContent = data.download_count;
+                document.getElementById('sl-result').style.display = 'block';
+            })
+            .catch(() => {
+                document.getElementById('sl-spinner').style.display = 'none';
+                document.getElementById('sl-generate-btn').disabled = false;
+                showError('Network error. Please try again.');
+            });
+    }
+
+    function showError(msg) {
+        const el = document.getElementById('sl-error');
+        el.textContent = '⚠ ' + msg;
+        el.style.display = 'block';
+    }
+
+    function copyGeneratedLink() {
+        const input = document.getElementById('sl-generated-link');
+        input.select();
+        navigator.clipboard.writeText(input.value).then(() => {
+            const btn = input.nextElementSibling;
+            const orig = btn.textContent;
+            btn.textContent = '✅ Copied!';
+            setTimeout(() => btn.textContent = orig, 2000);
+        }).catch(() => document.execCommand('copy'));
+    }
+
+    /* Legacy copy for the old share link area */
     function copyToClipboard(elementId) {
         const element = document.getElementById(elementId);
         element.select();
         document.execCommand('copy');
         alert('Link copied to clipboard!');
     }
-
-    function copyLink(id) {
-        const btn = event.target;
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', `/generate-link/${id}/`, true);
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                setTimeout(() => {
-                    const linkInput = document.getElementById(`link-${id}`);
-                    if (linkInput) {
-                        linkInput.select();
-                        document.execCommand('copy');
-                        btn.textContent = '✓ Copied';
-                        setTimeout(() => {
-                            btn.textContent = '🔗 Share Link';
-                            location.reload();
-                        }, 2000);
-                    }
-                }, 500);
-            }
-        };
-        xhr.send();
-    }
 </script>
-
-
 
 {% include 'core/footer.html' %}

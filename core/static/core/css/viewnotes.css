@@ -82,21 +82,24 @@
 
 .vn-file-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 12px;
 }
 
 .vn-btn {
-    flex: 1;
-    padding: 10px 16px;
+    flex: 1 1 calc(50% - 4px);
+    padding: 8px 12px;
     border: none;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
 }
 

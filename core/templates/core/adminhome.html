@@ -1,23 +1,48 @@
 {% load static %}
 
 {% include 'core/adminheader.html' %}
-
 {% include 'core/adminnav.html' %}
 
+<link rel="stylesheet" href="{% static 'core/css/adminhome.css' %}">
 
+<div class="ah-dashboard-container">
 
-<!-- page starts -->
+    <!-- Welcome Banner -->
+    <div class="ah-welcome-banner">
+        <h1 class="ah-welcome-title">Welcome back, <span>{{sname}}</span></h1>
+        <p class="ah-welcome-subtitle">Manage users, permissions and system settings from your control panel.</p>
+    </div>
 
-</br>
-<div id="page">
+    <!-- Quick Action Cards -->
+    <div class="ah-links-grid">
+        <a href="/manageusers/" class="ah-link-card"
+           onmousemove="this.style.setProperty('--mx',event.offsetX+'px');this.style.setProperty('--my',event.offsetY+'px')">
+            <div class="ah-link-icon">👥</div>
+            <h2 class="ah-link-title">Manage Users</h2>
+            <p class="ah-link-desc">View, activate, deactivate or remove registered user accounts.</p>
+            <span class="ah-link-arrow">Open &rarr;</span>
+        </a>
 
-    <h2><h1 class="uh-title">Welcome to Your Dashboard , {{sname}}</h1></h2>
-	<br class="clearfix" />
+        <a href="/cpadmin/" class="ah-link-card"
+           onmousemove="this.style.setProperty('--mx',event.offsetX+'px');this.style.setProperty('--my',event.offsetY+'px')">
+            <div class="ah-link-icon">🔑</div>
+            <h2 class="ah-link-title">Change Password</h2>
+            <p class="ah-link-desc">Update your admin credentials securely.</p>
+            <span class="ah-link-arrow">Open &rarr;</span>
+        </a>
+
+        <a href="/logout/" class="ah-link-card"
+           onmousemove="this.style.setProperty('--mx',event.offsetX+'px');this.style.setProperty('--my',event.offsetY+'px')"
+           style="border-color:rgba(248,113,113,0.18);">
+            <div class="ah-link-icon">🚪</div>
+            <h2 class="ah-link-title" style="color:rgba(248,113,113,0.85);">Logout</h2>
+            <p class="ah-link-desc">Sign out of the admin panel safely.</p>
+            <span class="ah-link-arrow" style="color:#f87171;">Exit &rarr;</span>
+        </a>
+    </div>
+
 </div>
-<!-- page ends -->
 
-
-
-
-
-
+{% include 'core/footer.html' %}
+</body>
+</html>

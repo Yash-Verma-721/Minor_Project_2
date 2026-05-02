@@ -4,24 +4,107 @@
 
 {% include 'core/usernav.html' %}
 
-<link rel="stylesheet" href="{% static 'core/css/sharenotes.css' %}">
+<link rel="stylesheet" href="{% static 'core/css/sharenotes.css' %}?v=1.0">
+
+<style>
+/* ── Storage Quota Bar ───────────────────────────────────────────────────── */
+.sn-quota-wrap {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(99,179,237,0.2);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.4rem;
+}
+.sn-quota-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .5rem;
+}
+.sn-quota-label {
+    font-size: .82rem;
+    color: #a0aec0;
+    font-weight: 600;
+    letter-spacing: .03em;
+}
+.sn-quota-value {
+    font-size: .82rem;
+    color: #63b3ed;
+    font-weight: 700;
+}
+.sn-quota-bar-bg {
+    height: 8px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 99px;
+    overflow: hidden;
+}
+.sn-quota-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width .5s ease;
+    background: linear-gradient(90deg,
+        {% if storage_pct >= 90 %}#fc8181, #e53e3e
+        {% elif storage_pct >= 70 %}#f6ad55, #dd6b20
+        {% else %}#63b3ed, #667eea{% endif %}
+    );
+}
+
+/* ── Error / Success messages ────────────────────────────────────────────── */
+.sn-error {
+    background: rgba(254,178,178,0.12);
+    border: 1px solid #fc8181;
+    border-radius: 10px;
+    color: #fc8181;
+    padding: .75rem 1rem;
+    margin-bottom: 1.2rem;
+    font-size: .9rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+.sn-output {
+    background: rgba(154,230,180,0.12);
+    border: 1px solid #68d391;
+    border-radius: 10px;
+    color: #68d391;
+    padding: .75rem 1rem;
+    margin-bottom: 1.2rem;
+    font-size: .9rem;
+}
+</style>
 
 <div class="sn-container">
     <div class="sn-page">
+
         {% if output %}
-            <div class="sn-output">{{output}}</div>
+            <div class="sn-output">✅ {{ output }}</div>
         {% endif %}
-        
+
+        {% if error %}
+            <div class="sn-error">⚠️ {{ error }}</div>
+        {% endif %}
+
+        <!-- Storage Usage Bar -->
+        <div class="sn-quota-wrap">
+            <div class="sn-quota-header">
+                <span class="sn-quota-label">💾 Storage Used</span>
+                <span class="sn-quota-value">{{ storage_used_mb }} MB / {{ storage_limit_mb }} MB</span>
+            </div>
+            <div class="sn-quota-bar-bg">
+                <div class="sn-quota-bar-fill" style="width: {{ storage_pct }}%"></div>
+            </div>
+        </div>
+
         <h2 class="sn-title">Upload Document</h2>
-        
+
         <form method="post" action="/sharenotes/" enctype="multipart/form-data" class="sn-form">
             {% csrf_token %}
-            
+
             <div class="sn-form-group">
                 <label class="sn-label">Title</label>
                 <input class="sn-input" type="text" name="title" required>
             </div>
-            
+
             <div class="sn-form-group">
                 <label class="sn-label">Category</label>
                 <select class="sn-select" name="category" required>
@@ -33,21 +116,41 @@
                     <option>Research Paper</option>
                 </select>
             </div>
-            
+
             <div class="sn-form-group">
                 <label class="sn-label">Description</label>
                 <textarea class="sn-textarea" name="description"></textarea>
             </div>
-            
+
             <div class="sn-form-group">
-                <label class="sn-label">Upload File</label>
-                <input class="sn-input" type="file" name="file" required>
+                <label class="sn-label">Upload File <small style="color:#a0aec0">(max 30 MB)</small></label>
+                <input class="sn-input" type="file" name="file" id="file-input" required>
+                <small id="file-size-hint" style="color:#a0aec0;font-size:.78rem;margin-top:.3rem;display:block"></small>
             </div>
-            
-            <button class="sn-submit" type="submit">Upload</button>
+
+            <button class="sn-submit" type="submit" id="upload-btn">Upload</button>
         </form>
     </div>
 </div>
+
+<script>
+/* Client-side file size hint (does NOT block submit – server is authoritative) */
+document.getElementById('file-input').addEventListener('change', function () {
+    const hint = document.getElementById('file-size-hint');
+    const btn  = document.getElementById('upload-btn');
+    if (!this.files.length) { hint.textContent = ''; return; }
+    const sizeMB = (this.files[0].size / (1024 * 1024)).toFixed(2);
+    if (this.files[0].size > 30 * 1024 * 1024) {
+        hint.style.color = '#fc8181';
+        hint.textContent = `⚠ File is ${sizeMB} MB — exceeds the 30 MB limit.`;
+        btn.style.opacity = '0.5';
+    } else {
+        hint.style.color = '#68d391';
+        hint.textContent = `✓ ${sizeMB} MB — looks good!`;
+        btn.style.opacity = '1';
+    }
+});
+</script>
 
 {% include 'core/footer.html' %}
 
